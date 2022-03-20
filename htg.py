@@ -100,6 +100,7 @@ mrzText = pytesseract.image_to_string(mrz)
 mrzText = mrzText.replace(" ", "")
 print(mrzText)
 
+#CHEALSIE CODE##########################################################################
 if mrzText[0] == "P":
 	print("document is passport")
 country_code = mrzText[2:5] #index 2,3,4 gives country code
@@ -116,10 +117,11 @@ first_name = ""
 while mrzText[index] != "<" and mrzText[index] != '\n':
 	#keep reading first name
 	first_index = index
-	while mrzText[index] != "<":
+	while mrzText[index] != "<" and mrzText[index] != '\n':
 		index += 1
 	first_name = first_name + " " + mrzText[first_index: index]
-	index += 1
+	if(mrzText[index] != '\n'):
+		index += 1
 first_name = first_name[1:]
 print(first_name)
 
@@ -127,7 +129,13 @@ while mrzText[index] != '\n':
 	index += 1
 
 index += 14 #skip to DoB
-DoB = mrzText[index:index+6]
+DoBNum = mrzText[index:index+6]
+DoB = ""
+for i in range(len(DoBNum)):
+	if i != 0 and i % 2 == 0:
+		DoB = DoB + "/"
+	DoB = DoB + DoBNum[i]
+	
 index += 7
 print(DoB)
 Gender = mrzText[index]
